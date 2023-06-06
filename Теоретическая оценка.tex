@@ -1,0 +1,226 @@
+\documentclass{report}
+
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wasysym}
+\usepackage{bbold}
+\usepackage{sectsty}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\phi}{\varphi}
+
+\DeclareMathOperator{\erf}{erf}
+
+\addto\captionsrussian{\renewcommand{\chaptername}{Задача}}
+\chapternumberfont{\LARGE}
+\chaptertitlefont{\Large}
+
+
+\title{Лабораторная 2}
+\author{Григоренко Павел, M3238}
+\date{03-06-2023}
+
+
+\begin{document}
+\maketitle
+\chapter{
+Случайная величина X принимает значения $-1$, $0$, $1$ с вероятностями $p_1$, $p_2$ и $p_3$ соответственно
+Какие условия нужно наложить на $p_1$, $p_2$, $p_3$, чтобы случайная величина $X$
+была представима в виде суммы двух независимых одинаково распределенных случайных величин?
+}
+
+Пусть эти величины~--- $X_1$ и $X_2$.
+Очевидно, что они должны быть невырожденными (иначе их сумма тоже вырожденная).
+Также нетрудно понять, что они не могут принимать более двух различных значений,
+ведь тогджа их сумма будет принимать не менее трёх различных значений.
+
+Итого, мы выяснили, что $X_1$ и $X_2$~--- дискретные случайные величины,
+независимые и с одинаковым распределением (два различных значения).
+Думаю, очевидно, что эти значения~--- это $\pm0.5$.
+
+Пусть значение $+0.5$ принимается с вероятность $p$ ($0<p<1$).
+Тогда значение $-0.5$ имеет вероятность $1-p$.
+
+Так как $X_1$ и $X_2$ независимы, то
+\[
+    p_3=P\left( X=1 \right)=P\left(X_1=+0.5 \land X_2=+0.5\right)=
+    P\left(X_1=+0.5\right)\cdot P\left(X_2=+0.5\right)=p^2
+\]
+
+Аналогично,  $p_1=P\left( X=-1 \right)=\left( 1-p \right)^2$.
+
+Ну и $p_2=P\left( X=0 \right)=2p(1-p)$.
+
+Получается, что на $p_1$ и $p_2$ должны удовлетворять следующим условиям:
+\[
+\begin{cases}
+p_1=\left( 1-\sqrt{p_3} \right)^2 \\
+p_2=2\sqrt{p_3}\left( 1-\sqrt{p_3} \right)
+\end{cases}
+\]
+
+Но так как $p_1+p_2+p_3=1$, то условия выше немного избыточны.
+Достаточно просто потребовать $p_1=\left( 1-\sqrt{p_3} \right)^2$.
+(Ну и также $0<p_3<1$, чтобы $0\notin\{p_1,p_2,p_3\}$).
+
+Ответ:
+\[
+\begin{cases}
+p_1=\left( 1-\sqrt{p_3} \right)^2 \\
+0<p_3<1
+\end{cases}
+\]
+
+
+
+\chapter{
+Пусть пара случайных величин $(U, V)$ имеет равномерное распределение на единичном круге и $W = U^2 + V^2$.
+Положим
+\[
+    X=U\sqrt{-\frac{2\log W}{W}},\quad
+    Y=V\sqrt{-\frac{2\log W}{W}}
+\]
+Показать, что $X$, $Y$~--- независимы и являются стандартными гауссовскими величинами.
+}
+
+Полярные координаты!
+\begin{gather*}
+    U=R\cos\phi\\
+    V=R\sin\phi\\
+    \phi\in\left[0;2\pi\right]\\
+    R\in\left[0;1\right]
+\end{gather*}
+Чтобы сохранить равномерное распределение по единичному кругу, берём следующие плотности вероятностей:
+\begin{gather*}
+    f_\phi(\psi)=\frac{1}{2\pi}\\
+    f_R(r)=2r
+\end{gather*}
+
+Подставим это в формулы для $W$, $X$ и $Y$:
+\[ W=U^2+V^2=R^2\cos^2\phi+R^2\sin^2\phi=R^2 \]
+\[ X=U\sqrt{-\frac{2\log W}{W}}=
+R\cos\phi\sqrt{-\frac{2\log R^2}{R^2}}=
+\cos\phi\sqrt{-2\log R^2}=
+\cos\phi\sqrt{-4\log R}=
+2\cos\phi\sqrt{-\log R} \]
+\[
+ Y=U\sqrt{-\frac{2\log W}{W}}=\dots=2\sin\phi\sqrt{-\log R}
+\]
+
+Давайте найдём функцию распределения для $Q:=2\sqrt{-\log R}$.
+Поймём, что
+\[
+    R\in\left[0;1\right] \Rightarrow \log R \le 0 \Rightarrow 2\sqrt{-\log R} \ge 0
+\]
+Теперь
+\[
+\begin{aligned}
+\forall q\ge 0 \quad
+P\left(Q\le q\right)&=
+P\left(2\sqrt{-\log R} \le q\right)=
+P\left(-4\log R \le q^2\right)=
+P\left(\log R \ge \frac{-q^2}{4}\right)=
+\\&=
+P\left(R \ge \exp{\frac{-q^2}{4}}\right)=
+1-\left(\exp{\frac{-q^2}{4}}\right)^2=
+1-\exp{\frac{-q^2}{2}}
+\end{aligned}
+\]
+Значит
+\[
+ F_Q(q)=
+ \begin{cases}
+  1-\exp{\frac{-q^2}{2}} &q\ge 0 \\
+  0 &q<0
+ \end{cases}
+\]
+а плотность
+\[
+f_Q(q)=F_Q'(q)=
+ \begin{cases}
+  q\exp{\frac{-q^2}{2}} &q\ge 0 \\
+  0 &q<0
+ \end{cases}
+\]
+
+А сейчас немного тригонометрии.
+\begin{gather*}
+ A:=\cos\phi \\
+ B:=\sin\phi \\
+ \begin{aligned}
+ \forall a \in [-1;1] \quad
+ P\left(A \le a\right)&=
+ P\left(\cos\phi\le a\right)
+ \\&=
+ P\left(\arccos a \le \phi \le 2\pi - \arccos a \right)
+ \\&=
+  \frac{(2\pi - \arccos a) - \arccos a}{2\pi}
+  \\&=
+  1-\frac{\arccos a}{\pi}
+ \end{aligned}\\
+  F_A(a)=
+  \begin{cases}
+    0 & a<-1 \\
+    1-\frac{\arccos a}{\pi} & a\in\left[0;1\right] \\
+    1 & a>1
+  \end{cases} \\
+  f_A(a)=F_A'(a)=
+  \begin{cases}
+    \frac{1}{\pi\sqrt{1-a^2}} & a\in\left[0;1\right] \\
+    0 & a\notin\left[0;1\right]
+  \end{cases}\\
+ \text{Аналогично, }\forall b \in [-1;1] \quad
+ P\left(B \le b\right)=
+ \frac{\arcsin b}{\pi} - \frac{1}{2} =
+  1-\frac{\arccos b}{\pi}\\
+  F_B \equiv F_A\\
+  f_B \equiv f_A
+\end{gather*}
+
+Так как $X=AQ$, $Y=BQ$, а распределения у $A$ и $B$ одинаковые,
+то значит $X$ и $Y$ тоже одинаково распределены.
+Найдём плотность вероятности для $X$:
+\[
+\begin{aligned}
+    f_X(x)&=\int_{-\infty}^{+\infty} f_Q(q)f_A(x/q) \frac{1}{|q|} dq \\
+    &=\int_{0}^{+\infty} f_Q(q)f_A(x/q) \frac{1}{q} dq
+    & \left(\forall q<0\quad f_Q(q)=0\right) \\
+    &=\int_{0}^{+\infty} q\exp{\frac{-q^2}{2}}f_A(x/q) \frac{1}{q} dq
+    &\text{Подстановка $f_Q$} \\
+    &=\int_{0}^{+\infty} \exp{\frac{-q^2}{2}}f_A(x/q) dq
+    &q\frac{1}{q}=1\\
+    &=\int_{|x|}^{+\infty} \exp{\frac{-q^2}{2}}f_A(x/q) dq
+    & \frac{x}{q}\notin[0;1]\Rightarrow f_A(x/q)=0 \\
+    &=\int_{|x|}^{+\infty} \frac{\exp{\frac{-q^2}{2}}}{\pi\sqrt{1-\left(\frac{x}{q}\right)^2}} dq
+    & \frac{x}{q}\notin[0;1]\Rightarrow f_A(x/q)=0 \\
+    &= \left. \frac{-\exp{\frac{-x^2}{2}}\left( 1-\erf\sqrt{\frac{q^2-x^2}{2}} \right)}{\sqrt{2\pi}}\right|_{q=|x|}^{q=+\infty}\\
+    &=\frac{\exp \frac{-x^2}{2}}{\sqrt{2\pi}}
+\end{aligned}
+\]
+А это плотность вероятности для нормального распределения с нулевым математическим ожиданием и единичной дисперсии.
+То есть $X$ и $Y$ являются стандартными гауссовскими величинами.
+
+
+
+
+\chapter{
+1. Для заданной плотности $p$ наследуйтесь от класса \texttt{rv\_continuous}
+ и сгенерируйте с помощью реализованного подкласса для вашего распределения
+ $n$ случайных чисел из данного распределения.
+ Посмотрите, как будет работать алгоритм при росте $n$ (сразу большим $n$ не делайте). \\
+ 2. Реализуйте генерацию для вашего распределения с помощью обратной к функции распределения
+ (при написании функции для $F^{-1}$ вызов специальных функций, например, квантили стандартного нормального закона, разрешается). Проведите тот же эксперимент.
+ 3. Выберите еще один метод для генерации случайных чисел (можно, например, rejecting sampling,
+ ratio of uniforms или другой метод). Опишите его математическое обоснование.
+ Воспользуйтесь реализацией или сами реализуйте. Проведите тот же эксперимент.
+\[
+    p(x)=\frac{4 \log^3 x}{x} \mathbb{1} \quad \left(x\in\left[1;e\right]\right)
+\]
+}
+\end{document}
+
